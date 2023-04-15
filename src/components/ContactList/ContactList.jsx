@@ -1,6 +1,9 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import ContactListItem from '../ContactListItem/ContactListItem';
 import css from './ContactList.module.css';
 
-const ContactList = ({ filter, contacts }) => {
+const ContactList = ({ filter, contacts, onDelete }) => {
   return (
     <>
       <ul className={css.list}>
@@ -9,11 +12,27 @@ const ContactList = ({ filter, contacts }) => {
             element.name.toLowerCase().includes(filter.toLowerCase())
           )
           .map(contact => (
-            <li key={contact.id}>{contact.name}</li>
+            <ContactListItem
+              key={contact.id}
+              contact={contact}
+              onDelete={onDelete}
+            ></ContactListItem>
           ))}
       </ul>
     </>
   );
+};
+
+ContactList.propTypes = {
+  filter: PropTypes.string.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default ContactList;
